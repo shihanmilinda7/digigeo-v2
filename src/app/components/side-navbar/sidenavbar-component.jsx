@@ -34,6 +34,10 @@ const SideNavbar = () => {
     }
   }
 
+  const selectedMap = useSelector(
+    (state) => state.mapSelectorReducer.selectedMap
+  );
+
   const isSideNavOpen = useSelector(
     (state) => state.mapSelectorReducer.isSideNavOpen
   );
@@ -79,7 +83,11 @@ const SideNavbar = () => {
               <div className="flex justify-center">
                 <button
                   onClick={() => selectMapHandler("area")}
-                  className="relative flex items-center border rounded-lg border-blue-500 focus:outline-none text-blue-600 text-sm sm:text-sm bg-white hover:bg-blue-200 py-2 w-full transition duration-150 ease-in"
+                  className={`relative flex items-center border rounded-lg border-blue-500 focus:outline-none ${
+                    selectedMap === "area"
+                      ? " text-white bg-blue-600 "
+                      : " text-blue-600 bg-white "
+                  } text-sm sm:text-sm hover:bg-blue-200 py-2 w-full transition duration-150 ease-in`}
                 >
                   <MdLocationOn className="h-6 w-6 ml-4" />
                   <span className="uppercase ml-4 font-semibold">
@@ -91,7 +99,11 @@ const SideNavbar = () => {
               <div className="flex justify-center">
                 <button
                   onClick={() => selectMapHandler("commodity")}
-                  className="relative flex items-center border rounded-lg border-blue-500 focus:outline-none text-blue-600 text-sm sm:text-sm bg-white hover:bg-blue-200 py-2 w-full transition duration-150 ease-in"
+                  className={`relative flex items-center border rounded-lg border-blue-500 focus:outline-none ${
+                    selectedMap === "commodity"
+                      ? " text-white bg-blue-600 "
+                      : " text-blue-600 bg-white "
+                  } text-sm sm:text-sm hover:bg-blue-200 py-2 w-full transition duration-150 ease-in`}
                 >
                   <BsFillBuildingsFill className="h-6 w-6 ml-4" />
                   <span className="uppercase ml-4 font-semibold">
@@ -103,7 +115,11 @@ const SideNavbar = () => {
               <div className="flex justify-center">
                 <button
                   onClick={() => selectMapHandler("company")}
-                  className="relative flex items-center border rounded-lg border-blue-500 focus:outline-none text-blue-600 text-sm sm:text-sm bg-white hover:bg-blue-200 py-2 w-full transition duration-150 ease-in"
+                  className={`relative flex items-center border rounded-lg border-blue-500 focus:outline-none ${
+                    selectedMap === "company"
+                      ? " text-white bg-blue-600 "
+                      : " text-blue-600 bg-white "
+                  } text-sm sm:text-sm hover:bg-blue-200 py-2 w-full transition duration-150 ease-in`}
                 >
                   <AiTwotoneGold className="h-6 w-6 ml-4" />
                   <span className="uppercase ml-4 font-semibold">
@@ -117,7 +133,7 @@ const SideNavbar = () => {
               <div className="flex justify-center">
                 <button
                   // onClick={masterLoginEvent}
-                  className="relative flex items-center justify-center border rounded-lg border-blue-500 focus:outline-none bg-blue-600 text-white text-sm sm:text-sm bg-white hover:bg-blue-400 py-2 w-full transition duration-150 ease-in"
+                  className="relative flex items-center justify-center border rounded-lg border-blue-500 focus:outline-none bg-blue-600 text-white text-sm sm:text-sm hover:bg-blue-400 py-2 w-full transition duration-150 ease-in"
                 >
                   {/* <AiTwotoneGold className="h-6 w-6 ml-4" /> */}
                   <span className="uppercase font-semibold">

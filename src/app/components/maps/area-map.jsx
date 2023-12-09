@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Suspense, useEffect, useState } from "react";
+import React, { Suspense, useCallback, useEffect, useState } from "react";
 import "ol/ol.css";
 import { Map } from "@react-ol/fiber";
 import { useRef } from "react";
@@ -34,8 +34,6 @@ export const AreaMap = () => {
     (state) => state.mapSelectorReducer.isSideNavOpen
   );
 
-
-
   const mapLyrs = useSelector((state) => state.mapSelectorReducer.areaLyrs);
   const areaZoomLevel = useSelector(
     (state) => state.mapSelectorReducer.areaZoomLevel
@@ -44,11 +42,31 @@ export const AreaMap = () => {
     (state) => state.mapSelectorReducer.areaInitialCenter
   );
 
-  // useEffect(() => {
-  //   mouseScrollEvent();
-  // }, []);
+  useEffect(() => {
+    mouseScrollEvent();
+  }, []);
 
-  // const mouseScrollEvent = () => {
+  const mouseScrollEvent = useCallback((event) => {
+    const map = mapRef.current;
+
+    // console.log("mapRef", mapRef.current?.getZoom());
+    const handleMoveEnd = () => {
+      const tmpZoomLevel = map.getView().getZoom();
+      const tmpinitialCenter = map.getView().getCenter();
+      dispatch(setAreaZoomLevel(tmpZoomLevel));
+      dispatch(setAreaInitialCenter(tmpinitialCenter));
+      // console.log("Current Zoom Level:", tmpinitialCenter);
+      // console.log("Current Zoom Level:", tmpZoomLevel);
+      // You can perform actions with the zoom level here
+    };
+
+    map?.on("moveend", handleMoveEnd);
+
+    return () => {
+      map?.un("moveend", handleMoveEnd);
+    };
+  }, []);
+  // const mouseScrollEvent = useCallback() => {
   //   const map = mapRef.current;
 
   //   // console.log("mapRef", mapRef.current?.getZoom());
@@ -105,9 +123,32 @@ export const AreaMap = () => {
         className="absolute left-0 bottom-0 z-50 m-2"
         color="primary"
       >
-        <Button onClick={() => dispatch(setAreaLyrs("m"))} className="bg-blue-700 text-white">Map</Button>
-        <Button onClick={() => dispatch(setAreaLyrs("s"))} className="bg-blue-700 text-white">Satelite</Button>
-        <Button onClick={() => dispatch(setAreaLyrs("p"))} className="bg-blue-700 text-white">Terrain</Button>
+        <Button
+          onClick={() => dispatch(setAreaLyrs("m"))}
+          className={`${
+            mapLyrs == "m" ? "bg-blue-700 text-white" : "bg-blue-500 text-white"
+          } `}
+        >
+          Map
+        </Button>
+        <Button
+          onClick={() => dispatch(setAreaLyrs("s"))}
+          className={`${
+            mapLyrs == "s" ? "bg-blue-700 text-white" : "bg-blue-500 text-white"
+          } `}
+        >
+          Satelite
+        </Button>
+        <Button
+          onClick={() => dispatch(setAreaLyrs("p"))}
+          className={`${
+            mapLyrs == "p ` `1  ` `       "
+              ? "bg-blue-700 text-white"
+              : "bg-blue-500 text-white"
+          } `}
+        >
+          Terrain
+        </Button>
       </ButtonGroup>
       <Map
         ref={mapRef}

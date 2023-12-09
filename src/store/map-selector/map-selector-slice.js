@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState = {
-  selectedMap: "no_map",
+  selectedMap: "area",
   isSideNavOpen: true,
   // isAreaSideNavOpen: true,
   // isCompanySideNavOpen: true,
@@ -65,7 +65,7 @@ const mapSelectorSlice = createSlice({
     },
     setAreaZoomLevel: (state, action) => {
       state.areaZoomLevel = action.payload;
-      state.currentSearchString = `?t=${state.selectedMap}&sn=${state.isAreaSideNavOpen}&lyrs=${state.areaLyrs}&z=${action.payload}&c=${state.areaInitialCenter}`;
+      state.currentSearchString = `?t=${state.selectedMap}&sn=${state.isSideNavOpen}&lyrs=${state.areaLyrs}&z=${action.payload}&c=${state.areaInitialCenter}`;
     },
     setCompanyZoomLevel: (state, action) => {
       state.companyZoomLevel = action.payload;
@@ -75,7 +75,7 @@ const mapSelectorSlice = createSlice({
     },
     setAreaInitialCenter: (state, action) => {
       state.areaInitialCenter = action.payload;
-      state.currentSearchString = `?t=${state.selectedMap}&sn=${state.isAreaSideNavOpen}&lyrs=${state.areaLyrs}&z=${state.areaZoomLevel}&c=${action.payload}`;
+      state.currentSearchString = `?t=${state.selectedMap}&sn=${state.isSideNavOpen}&lyrs=${state.areaLyrs}&z=${state.areaZoomLevel}&c=${action.payload}`;
     },
     setCompanyInitialCenter: (state, action) => {
       state.companyInitialCenter = action.payload;
