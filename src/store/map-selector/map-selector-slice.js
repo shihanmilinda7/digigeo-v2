@@ -92,9 +92,9 @@ const mapSelectorSlice = createSlice({
 export const {
   setSelectedMap,
   setIsSideNavOpen,
-  setIsAreaSideNavOpen,
-  setIsCompanySideNavOpen,
-  setIsCommoditySideNavOpen,
+  // setIsAreaSideNavOpen,
+  // setIsCompanySideNavOpen,
+  // setIsCommoditySideNavOpen,
   setCurrentSearchString,
   setAreaLyrs,
   setCompanyLyrs,

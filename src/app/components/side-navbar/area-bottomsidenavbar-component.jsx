@@ -7,7 +7,7 @@ import { BsFillArrowLeftSquareFill } from "react-icons/bs";
 import { GiEarthAmerica } from "react-icons/gi";
 
 import { useDispatch, useSelector } from "react-redux";
-import { setIsAreaSideNavOpen } from "../../../store/map-selector/map-selector-slice";
+// import { setIsAreaSideNavOpen } from "../../../store/map-selector/map-selector-slice";
 import { useRouter, useSearchParams } from "next/navigation";
 
 const AreaBottomSideNavbar = () => {
@@ -37,7 +37,7 @@ const AreaBottomSideNavbar = () => {
 
   const collapsibleBtnHandler = () => {
     const tmpValue = String(isAreaSideNavOpen).toLowerCase() === "true";
-    dispatch(setIsAreaSideNavOpen(!tmpValue));
+    // dispatch(setIsAreaSideNavOpen(!tmpValue));
   };
 
   return (

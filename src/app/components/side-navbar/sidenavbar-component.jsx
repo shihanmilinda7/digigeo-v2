@@ -12,9 +12,9 @@ import { GiEarthAmerica } from "react-icons/gi";
 import { FaFilter, FaSearch } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  setIsAreaSideNavOpen,
   setIsSideNavOpen,
   setSelectedMap,
+  setUrlUpdate,
 } from "../../../store/map-selector/map-selector-slice";
 import { useRouter, useSearchParams } from "next/navigation";
 import { MdLocationOn } from "react-icons/md";
@@ -37,13 +37,21 @@ const SideNavbar = () => {
   const selectedMap = useSelector(
     (state) => state.mapSelectorReducer.selectedMap
   );
-
   const isSideNavOpen = useSelector(
     (state) => state.mapSelectorReducer.isSideNavOpen
+  );
+  const areaLyrs = useSelector((state) => state.mapSelectorReducer.areaLyrs);
+  const areaZoomLevel = useSelector(
+    (state) => state.mapSelectorReducer.areaZoomLevel
+  );
+  const areaInitialCenter = useSelector(
+    (state) => state.mapSelectorReducer.areaInitialCenter
   );
 
   const selectMapHandler = (selectedValue) => {
     dispatch(setSelectedMap(selectedValue));
+    const newUrl = `${window.location.pathname}?t=${selectedValue}&sn=${isSideNavOpen}&lyrs=${areaLyrs}&z=${areaZoomLevel}&c=${areaInitialCenter}`;
+    window.history.replaceState({}, "", newUrl);
   };
 
   return (
@@ -80,20 +88,29 @@ const SideNavbar = () => {
               />
             </div>
             <div className="flex flex-col gap-2 w-full pb-2 pl-2 pr-2">
-              <div className="flex justify-center">
+              <div className="flex justify-center gap-1 w-full">
                 <button
                   onClick={() => selectMapHandler("area")}
                   className={`relative flex items-center border rounded-lg border-blue-500 focus:outline-none ${
                     selectedMap === "area"
-                      ? " text-white bg-blue-600 "
-                      : " text-blue-600 bg-white "
-                  } text-sm sm:text-sm hover:bg-blue-200 py-2 w-full transition duration-150 ease-in`}
+                      ? " text-white bg-blue-600 w-10/12"
+                      : " text-blue-600 bg-white w-full"
+                  } text-sm sm:text-sm hover:bg-blue-200 py-2 transition duration-150 ease-in`}
                 >
                   <MdLocationOn className="h-6 w-6 ml-4" />
                   <span className="uppercase ml-4 font-semibold">
                     Exploration areas
                   </span>
-                  <FaFilter className="absolute right-0 h-4 w-4 mr-6" />
+                  {/* <FaFilter className="absolute right-0 h-4 w-4 mr-6" /> */}
+                </button>
+                <button
+                  className={`relative flex items-center justify-center border rounded-lg border-blue-500 focus:outline-none ${
+                    selectedMap === "area"
+                      ? " text-white bg-blue-600 w-2/12"
+                      : " hidden"
+                  } text-sm sm:text-sm hover:bg-blue-200 py-2 transition duration-150 ease-in`}
+                >
+                  <FaFilter className="h-4 w-4" />
                 </button>
               </div>
               <div className="flex justify-center">
@@ -109,7 +126,7 @@ const SideNavbar = () => {
                   <span className="uppercase ml-4 font-semibold">
                     Properties
                   </span>
-                  <FaFilter className="absolute right-0 h-4 w-4 mr-6" />
+                  {/* <FaFilter className="absolute right-0 h-4 w-4 mr-6" /> */}
                 </button>
               </div>
               <div className="flex justify-center">
@@ -125,7 +142,7 @@ const SideNavbar = () => {
                   <span className="uppercase ml-4 font-semibold">
                     Companies
                   </span>
-                  <FaFilter className="absolute right-0 h-4 w-4 mr-6" />
+                  {/* <FaFilter className="absolute right-0 h-4 w-4 mr-6" /> */}
                 </button>
               </div>
             </div>

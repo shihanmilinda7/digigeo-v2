@@ -7,7 +7,7 @@ import { BsFillArrowLeftSquareFill } from "react-icons/bs";
 import { GiEarthAmerica } from "react-icons/gi";
 
 import { useDispatch, useSelector } from "react-redux";
-import { setIsCompanySideNavOpen } from "../../../store/map-selector/map-selector-slice";
+// import { setIsCompanySideNavOpen } from "../../../store/map-selector/map-selector-slice";
 
 const CompanyBottomSideNavbar = () => {
   let pathname = "";
@@ -28,7 +28,7 @@ const CompanyBottomSideNavbar = () => {
   
   const collapsibleBtnHandler = () => {
     setOpen(!open);
-    dispatch(setIsCompanySideNavOpen(!open));
+    // dispatch(setIsCompanySideNavOpen(!open));
   };
 
   return (

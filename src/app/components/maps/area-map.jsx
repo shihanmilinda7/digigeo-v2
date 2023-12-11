@@ -12,6 +12,7 @@ import {
   setAreaLyrs,
   setAreaZoomLevel,
   setIsSideNavOpen,
+  setUrlUpdate,
 } from "@/store/map-selector/map-selector-slice";
 import { BsFillArrowLeftSquareFill } from "react-icons/bs";
 import { GiEarthAmerica } from "react-icons/gi";
@@ -30,6 +31,9 @@ export const AreaMap = () => {
   const mapRef = useRef();
   const dispatch = useDispatch();
 
+  const selectedMap = useSelector(
+    (state) => state.mapSelectorReducer.selectedMap
+  );
   const isSideNavOpen = useSelector(
     (state) => state.mapSelectorReducer.isSideNavOpen
   );
@@ -42,30 +46,30 @@ export const AreaMap = () => {
     (state) => state.mapSelectorReducer.areaInitialCenter
   );
 
-  useEffect(() => {
-    mouseScrollEvent();
-  }, []);
+  // useEffect(() => {
+  //   // mouseScrollEvent();
+  // }, []);
 
-  const mouseScrollEvent = useCallback((event) => {
-    const map = mapRef.current;
+  // const mouseScrollEvent = useCallback((event) => {
+  //   const map = mapRef.current;
 
-    // console.log("mapRef", mapRef.current?.getZoom());
-    const handleMoveEnd = () => {
-      const tmpZoomLevel = map.getView().getZoom();
-      const tmpinitialCenter = map.getView().getCenter();
-      dispatch(setAreaZoomLevel(tmpZoomLevel));
-      dispatch(setAreaInitialCenter(tmpinitialCenter));
-      // console.log("Current Zoom Level:", tmpinitialCenter);
-      // console.log("Current Zoom Level:", tmpZoomLevel);
-      // You can perform actions with the zoom level here
-    };
+  //   // console.log("mapRef", mapRef.current?.getZoom());
+  //   const handleMoveEnd = () => {
+  //     const tmpZoomLevel = map.getView().getZoom();
+  //     const tmpinitialCenter = map.getView().getCenter();
+  //     // dispatch(setAreaZoomLevel(tmpZoomLevel));
+  //     // dispatch(setAreaInitialCenter(tmpinitialCenter));
+  //     // console.log("Current Zoom Level:", tmpinitialCenter);
+  //     // console.log("Current Zoom Level:", tmpZoomLevel);
+  //     // You can perform actions with the zoom level here
+  //   };
 
-    map?.on("moveend", handleMoveEnd);
+  //   map?.on("moveend", handleMoveEnd);
 
-    return () => {
-      map?.un("moveend", handleMoveEnd);
-    };
-  }, []);
+  //   return () => {
+  //     map?.un("moveend", handleMoveEnd);
+  //   };
+  // }, []);
   // const mouseScrollEvent = useCallback() => {
   //   const map = mapRef.current;
 
@@ -90,6 +94,19 @@ export const AreaMap = () => {
   const collapsibleBtnHandler = () => {
     const tmpValue = String(isSideNavOpen).toLowerCase() === "true";
     dispatch(setIsSideNavOpen(!tmpValue));
+    const newUrl = `${
+      window.location.pathname
+    }?t=${selectedMap}&sn=${!tmpValue}&lyrs=${mapLyrs}&z=${areaZoomLevel}&c=${areaInitialCenter}`;
+    window.history.replaceState({}, "", newUrl);
+    // dispatch(setUrlUpdate());
+  };
+
+  const setLyrs = (lyrs) => {
+    dispatch(setAreaLyrs(lyrs));
+    const newUrl = `${
+      window.location.pathname
+    }?t=${selectedMap}&sn=${isSideNavOpen}&lyrs=${lyrs}&z=${areaZoomLevel}&c=${areaInitialCenter}`;
+    window.history.replaceState({}, "", newUrl);
   };
 
   return (
@@ -124,7 +141,7 @@ export const AreaMap = () => {
         color="primary"
       >
         <Button
-          onClick={() => dispatch(setAreaLyrs("m"))}
+          onClick={() => setLyrs("m")}
           className={`${
             mapLyrs == "m" ? "bg-blue-700 text-white" : "bg-blue-500 text-white"
           } `}
@@ -132,7 +149,7 @@ export const AreaMap = () => {
           Map
         </Button>
         <Button
-          onClick={() => dispatch(setAreaLyrs("s"))}
+          onClick={() => setLyrs("s")}
           className={`${
             mapLyrs == "s" ? "bg-blue-700 text-white" : "bg-blue-500 text-white"
           } `}
@@ -140,11 +157,9 @@ export const AreaMap = () => {
           Satelite
         </Button>
         <Button
-          onClick={() => dispatch(setAreaLyrs("p"))}
+          onClick={() => setLyrs("p")}
           className={`${
-            mapLyrs == "p ` `1  ` `       "
-              ? "bg-blue-700 text-white"
-              : "bg-blue-500 text-white"
+            mapLyrs == "p" ? "bg-blue-700 text-white" : "bg-blue-500 text-white"
           } `}
         >
           Terrain
