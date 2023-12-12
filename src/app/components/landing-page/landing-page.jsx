@@ -36,7 +36,7 @@ export const LandingPage = () => {
   const mapCenter = searchParams.get("c");
 
   useEffect(() => {
-    console.log("mapType",mapType)
+    console.log("mapType", mapType);
     updateRedux();
   }, []);
 
@@ -55,9 +55,7 @@ export const LandingPage = () => {
           break;
         case "company":
           dispatch(
-            setIsSideNavOpen(
-              String(isNavOpen).toLowerCase() === "true"
-            )
+            setIsSideNavOpen(String(isNavOpen).toLowerCase() === "true")
           );
           dispatch(setCompanyLyrs(mapLyrs));
           dispatch(setCompanyZoomLevel(mapZoom));
@@ -66,9 +64,7 @@ export const LandingPage = () => {
           break;
         case "commodity":
           dispatch(
-            setIsSideNavOpen(
-              String(isNavOpen).toLowerCase() === "true"
-            )
+            setIsSideNavOpen(String(isNavOpen).toLowerCase() === "true")
           );
           dispatch(setCommodityLyrs(mapLyrs));
           dispatch(setCommodityZoomLevel(mapZoom));
@@ -79,13 +75,15 @@ export const LandingPage = () => {
         default:
           break;
       }
+      // router.push("/");
+      // dispatch(setSelectedMap(mapType));
     }
   };
 
   return (
     <div className="w-full flex bg-white">
       <div className={`${isSideNavOpen ? "z-40" : "fixed top-15 left-0 z-40"}`}>
-        {mapType}-{isNavOpen}-{mapLyrs}-{mapZoom}-{mapCenter}
+        {/* {mapType}-{isNavOpen}-{mapLyrs}-{mapZoom}-{mapCenter} */}
         <SideNavbar />
       </div>
       <div className="z-0">

@@ -46,30 +46,30 @@ export const AreaMap = () => {
     (state) => state.mapSelectorReducer.areaInitialCenter
   );
 
-  // useEffect(() => {
-  //   // mouseScrollEvent();
-  // }, []);
+  useEffect(() => {
+    mouseScrollEvent();
+  }, []);
 
-  // const mouseScrollEvent = useCallback((event) => {
-  //   const map = mapRef.current;
+  const mouseScrollEvent = useCallback((event) => {
+    const map = mapRef.current;
 
-  //   // console.log("mapRef", mapRef.current?.getZoom());
-  //   const handleMoveEnd = () => {
-  //     const tmpZoomLevel = map.getView().getZoom();
-  //     const tmpinitialCenter = map.getView().getCenter();
-  //     // dispatch(setAreaZoomLevel(tmpZoomLevel));
-  //     // dispatch(setAreaInitialCenter(tmpinitialCenter));
-  //     // console.log("Current Zoom Level:", tmpinitialCenter);
-  //     // console.log("Current Zoom Level:", tmpZoomLevel);
-  //     // You can perform actions with the zoom level here
-  //   };
+    // console.log("mapRef", mapRef.current?.getZoom());
+    const handleMoveEnd = () => {
+      console.log("map", map);
+      const tmpZoomLevel = map.getView().getZoom();
+      const tmpinitialCenter = map.getView().getCenter();
+      dispatch(setAreaZoomLevel(tmpZoomLevel));
+      dispatch(setAreaInitialCenter(tmpinitialCenter));
+      const newUrl = `${window.location.pathname}?t=${selectedMap}&sn=${isSideNavOpen}&lyrs=${mapLyrs}&z=${tmpZoomLevel}&c=${tmpinitialCenter}`;
+      window.history.replaceState({}, "", newUrl);
+    };
 
-  //   map?.on("moveend", handleMoveEnd);
+    map?.on("moveend", handleMoveEnd);
 
-  //   return () => {
-  //     map?.un("moveend", handleMoveEnd);
-  //   };
-  // }, []);
+    return () => {
+      map?.un("moveend", handleMoveEnd);
+    };
+  }, []);
   // const mouseScrollEvent = useCallback() => {
   //   const map = mapRef.current;
 
@@ -103,9 +103,7 @@ export const AreaMap = () => {
 
   const setLyrs = (lyrs) => {
     dispatch(setAreaLyrs(lyrs));
-    const newUrl = `${
-      window.location.pathname
-    }?t=${selectedMap}&sn=${isSideNavOpen}&lyrs=${lyrs}&z=${areaZoomLevel}&c=${areaInitialCenter}`;
+    const newUrl = `${window.location.pathname}?t=${selectedMap}&sn=${isSideNavOpen}&lyrs=${lyrs}&z=${areaZoomLevel}&c=${areaInitialCenter}`;
     window.history.replaceState({}, "", newUrl);
   };
 
