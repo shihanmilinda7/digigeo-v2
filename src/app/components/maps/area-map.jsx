@@ -187,7 +187,8 @@ export const AreaMap = () => {
         controls={[]}
       >
         <olView
-          initialCenter={areaInitialCenter}
+          initialCenter={[0,0]}
+          center={areaInitialCenter}
           initialZoom={2}
           zoom={areaZoomLevel}
         />
