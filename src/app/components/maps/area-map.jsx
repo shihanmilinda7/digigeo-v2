@@ -63,7 +63,7 @@ export const AreaMap = () => {
 
     // console.log("mapRef", mapRef.current?.getZoom());
     const handleMoveEnd = () => {
-      console.log("map", map);
+      // console.log("map", map);
       const tmpZoomLevel = map.getView().getZoom();
       const tmpinitialCenter = map.getView().getCenter();
       dispatch(setAreaZoomLevel(tmpZoomLevel));
