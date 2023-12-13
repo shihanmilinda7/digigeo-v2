@@ -76,7 +76,7 @@ const HomeNavbar = () => {
       >
         <div className="flex">
           <span className="pl-1 mx-auto text-xl font-black leading-none text-white dark:text-white select-none  flex items-center justify-center">
-            DigiGeo<span className="text-white">Maps</span>
+            DigiGeo<span className="text-white">Maps {mapLyrs}</span>
           </span>
           {/* <img src="/logo.png"></img> */}
         </div>
