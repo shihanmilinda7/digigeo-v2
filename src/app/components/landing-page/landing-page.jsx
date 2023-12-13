@@ -21,10 +21,25 @@ import {
 } from "@/store/map-selector/map-selector-slice";
 
 export const LandingPage = () => {
+  let pathname = "";
+  try {
+    pathname = window.location.href;
+  } catch (error) {}
+
   const router = useRouter();
 
+  const selectedMap = useSelector(
+    (state) => state.mapSelectorReducer.selectedMap
+  );
   const isSideNavOpen = useSelector(
     (state) => state.mapSelectorReducer.isSideNavOpen
+  );
+  const mapLyrs1 = useSelector((state) => state.mapSelectorReducer.areaLyrs);
+  const areaZoomLevel = useSelector(
+    (state) => state.mapSelectorReducer.areaZoomLevel
+  );
+  const areaInitialCenter = useSelector(
+    (state) => state.mapSelectorReducer.areaInitialCenter
   );
 
   const dispatch = useDispatch();
@@ -75,7 +90,12 @@ export const LandingPage = () => {
         default:
           break;
       }
-      // router.push("/");
+      // router.push(
+      //   `/?t=${mapType}&sn=${isNavOpen}&lyrs=${mapLyrs}&z=${mapZoom}&c=${mapCenter}`
+      // );
+      // const newUrl = `${window.location.pathname}?t=${selectedMap}&sn=${isSideNavOpen}&lyrs=${mapLyrs1}&z=${areaZoomLevel}&c=${areaInitialCenter}`;
+      const newUrl = `${window.location.pathname}?t=${mapType}&sn=${isNavOpen}&lyrs=${mapLyrs}&z=${mapZoom}&c=${mapCenter}`;
+      window.history.replaceState({}, "", newUrl);
       // dispatch(setSelectedMap(mapType));
     }
   };

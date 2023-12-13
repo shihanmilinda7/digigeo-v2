@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { AiFillHome, AiFillQuestionCircle } from "react-icons/ai";
 import { MdEmail } from "react-icons/md";
 import { ThemeSwitcher } from "../theme-switcher";
+import { useSelector } from "react-redux";
 
 const HomeNavbar = () => {
   //get pathname
@@ -25,6 +26,7 @@ const HomeNavbar = () => {
   const currentRoute = usePathname();
 
   const router = useRouter();
+  const mapLyrs = useSelector((state) => state.mapSelectorReducer.areaLyrs);
 
   useEffect(() => {
     const button = document.querySelector("#menu-button");
@@ -74,7 +76,7 @@ const HomeNavbar = () => {
       >
         <div className="flex">
           <span className="pl-1 mx-auto text-xl font-black leading-none text-white dark:text-white select-none  flex items-center justify-center">
-            DigiGeo<span className="text-white">Maps</span>
+            DigiGeo<span className="text-white">Maps {mapLyrs}</span>
           </span>
           {/* <img src="/logo.png"></img> */}
         </div>
@@ -109,17 +111,32 @@ const HomeNavbar = () => {
               flex gap-6"
           >
             <li>
-              <Button isIconOnly variant="light" color="primary" aria-label="Like">
+              <Button
+                isIconOnly
+                variant="light"
+                color="primary"
+                aria-label="Like"
+              >
                 <AiFillHome className="h-6 w-6 dark:text-white text-white" />
               </Button>
             </li>
             <li>
-              <Button isIconOnly variant="light" color="primary" aria-label="Like">
+              <Button
+                isIconOnly
+                variant="light"
+                color="primary"
+                aria-label="Like"
+              >
                 <AiFillQuestionCircle className="h-6 w-6 dark:text-white text-white" />
               </Button>
             </li>
             <li>
-              <Button isIconOnly variant="light" color="primary" aria-label="Like">
+              <Button
+                isIconOnly
+                variant="light"
+                color="primary"
+                aria-label="Like"
+              >
                 <MdEmail className="h-6 w-6 dark:text-white text-white" />
               </Button>
             </li>

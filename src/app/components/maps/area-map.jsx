@@ -24,6 +24,9 @@ export const AreaMap = () => {
     pathname = window.location.href;
   } catch (error) {}
 
+  const router = useRouter();
+  const [center, setCenter] = useState("");
+  const [zoom, setZoom] = useState("");
   // const searchParams = useSearchParams();
   // const mapLyrs = searchParams.get("lyrs");
 
@@ -50,6 +53,11 @@ export const AreaMap = () => {
     mouseScrollEvent();
   }, []);
 
+  useEffect(() => {
+    const newUrl = `${window.location.pathname}?t=${selectedMap}&sn=${isSideNavOpen}&lyrs=${mapLyrs}&z=${zoom}&c=${center}`;
+    window.history.replaceState({}, "", newUrl);
+  }, [zoom, center]);
+
   const mouseScrollEvent = useCallback((event) => {
     const map = mapRef.current;
 
@@ -60,8 +68,14 @@ export const AreaMap = () => {
       const tmpinitialCenter = map.getView().getCenter();
       dispatch(setAreaZoomLevel(tmpZoomLevel));
       dispatch(setAreaInitialCenter(tmpinitialCenter));
-      const newUrl = `${window.location.pathname}?t=${selectedMap}&sn=${isSideNavOpen}&lyrs=${mapLyrs}&z=${tmpZoomLevel}&c=${tmpinitialCenter}`;
-      window.history.replaceState({}, "", newUrl);
+      setZoom(tmpZoomLevel);
+      setCenter(tmpinitialCenter);
+      // router.push(
+      //   `/?t=${selectedMap}&sn=${isSideNavOpen}&lyrs=${mapLyrs}&z=${tmpZoomLevel}&c=${tmpinitialCenter}`
+      // );
+      // console.log("selectedMap", selectedMap, isSideNavOpen, mapLyrs);
+      // const newUrl = `${window.location.pathname}?t=${selectedMap}&sn=${isSideNavOpen}&lyrs=${mapLyrs}&z=${tmpZoomLevel}&c=${tmpinitialCenter}`;
+      // window.history.replaceState({}, "", newUrl);
     };
 
     map?.on("moveend", handleMoveEnd);
