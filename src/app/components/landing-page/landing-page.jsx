@@ -65,7 +65,9 @@ export const LandingPage = () => {
           );
           dispatch(setAreaLyrs(mapLyrs));
           dispatch(setAreaZoomLevel(mapZoom));
-          dispatch(setAreaInitialCenter(mapCenter));
+          const tmpMapCenter = mapCenter.split(",").map(Number);
+          dispatch(setAreaInitialCenter(tmpMapCenter));
+          // console.log("mapCenter", tmpMapCenter);
 
           break;
         case "company":

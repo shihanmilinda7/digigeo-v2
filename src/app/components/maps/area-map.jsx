@@ -73,7 +73,7 @@ export const AreaMap = () => {
       // router.push(
       //   `/?t=${selectedMap}&sn=${isSideNavOpen}&lyrs=${mapLyrs}&z=${tmpZoomLevel}&c=${tmpinitialCenter}`
       // );
-      // console.log("selectedMap", selectedMap, isSideNavOpen, mapLyrs);
+      // console.log("tmpinitialCenter", tmpinitialCenter);
       // const newUrl = `${window.location.pathname}?t=${selectedMap}&sn=${isSideNavOpen}&lyrs=${mapLyrs}&z=${tmpZoomLevel}&c=${tmpinitialCenter}`;
       // window.history.replaceState({}, "", newUrl);
     };
@@ -187,6 +187,7 @@ export const AreaMap = () => {
         controls={[]}
       >
         <olView
+          // ref={mapRef}
           initialCenter={[0, 0]}
           center={areaInitialCenter}
           initialZoom={2}
