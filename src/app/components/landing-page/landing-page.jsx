@@ -18,7 +18,7 @@ import {
   setCurrentSearchString,
   setIsSideNavOpen,
   setSelectedMap,
-} from "@/store/map-selector/map-selector-slice";
+} from "../../../store/map-selector/map-selector-slice";
 
 export const LandingPage = () => {
   let pathname = "";
