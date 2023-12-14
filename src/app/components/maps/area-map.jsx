@@ -11,9 +11,9 @@ import {
   setAreaInitialCenter,
   setAreaLyrs,
   setAreaZoomLevel,
-  setIsSideNavOpen,
   setUrlUpdate,
-} from "@/store/map-selector/map-selector-slice";
+  setIsSideNavOpen,
+} from "../../../store/map-selector/map-selector-slice";
 import { BsFillArrowLeftSquareFill } from "react-icons/bs";
 import { GiEarthAmerica } from "react-icons/gi";
 import { AiFillMinusSquare, AiFillPlusSquare } from "react-icons/ai";
@@ -187,7 +187,7 @@ export const AreaMap = () => {
         controls={[]}
       >
         <olView
-          initialCenter={[0,0]}
+          initialCenter={[0, 0]}
           center={areaInitialCenter}
           initialZoom={2}
           zoom={areaZoomLevel}
