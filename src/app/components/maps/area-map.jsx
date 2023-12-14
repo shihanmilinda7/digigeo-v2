@@ -78,10 +78,10 @@ export const AreaMap = () => {
       // window.history.replaceState({}, "", newUrl);
     };
 
-    map?.on("moveend", handleMoveEnd);
+    map?.on("dragend", handleMoveEnd);
 
     return () => {
-      map?.un("moveend", handleMoveEnd);
+      map?.un("dragend", handleMoveEnd);
     };
   }, []);
   // const mouseScrollEvent = useCallback() => {

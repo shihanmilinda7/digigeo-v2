@@ -18,6 +18,7 @@ import {
 } from "../../../store/map-selector/map-selector-slice";
 import { useRouter, useSearchParams } from "next/navigation";
 import { MdLocationOn } from "react-icons/md";
+import AreaFilter from "../filter-popups/area-filters";
 
 const SideNavbar = () => {
   let pathname = "";
@@ -33,6 +34,7 @@ const SideNavbar = () => {
       pathname = pathname.substring(0, r);
     }
   }
+  const [isOpenIn, setIsOpenIn] = useState();
 
   const selectedMap = useSelector(
     (state) => state.mapSelectorReducer.selectedMap
@@ -52,6 +54,10 @@ const SideNavbar = () => {
     dispatch(setSelectedMap(selectedValue));
     const newUrl = `${window.location.pathname}?t=${selectedValue}&sn=${isSideNavOpen}&lyrs=${areaLyrs}&z=${areaZoomLevel}&c=${areaInitialCenter}`;
     window.history.replaceState({}, "", newUrl);
+  };
+
+  const closePopup = () => {
+    setIsOpenIn(false);
   };
 
   return (
@@ -103,7 +109,9 @@ const SideNavbar = () => {
                   </span>
                   {/* <FaFilter className="absolute right-0 h-4 w-4 mr-6" /> */}
                 </button>
+                <AreaFilter isOpenIn={isOpenIn} closePopup={closePopup} />
                 <button
+                  onClick={() => setIsOpenIn(true)}
                   className={`relative flex items-center justify-center border rounded-lg border-blue-500 focus:outline-none ${
                     selectedMap === "area"
                       ? " text-white bg-blue-600 w-2/12"
@@ -112,6 +120,15 @@ const SideNavbar = () => {
                 >
                   <FaFilter className="h-4 w-4" />
                 </button>
+                {/* <button
+                  className={`relative flex items-center justify-center border rounded-lg border-blue-500 focus:outline-none ${
+                    selectedMap === "area"
+                      ? " text-white bg-blue-600 w-2/12"
+                      : " hidden"
+                  } text-sm sm:text-sm hover:bg-blue-200 py-2 transition duration-150 ease-in`}
+                >
+                  <FaFilter className="h-4 w-4" />
+                </button> */}
               </div>
               <div className="flex justify-center">
                 <button
