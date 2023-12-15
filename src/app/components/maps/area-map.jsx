@@ -17,6 +17,7 @@ import {
 import { BsFillArrowLeftSquareFill } from "react-icons/bs";
 import { GiEarthAmerica } from "react-icons/gi";
 import { AiFillMinusSquare, AiFillPlusSquare } from "react-icons/ai";
+import AreaSideNavbar from "../side-navbar-second/area-sidenavbar";
 
 export const AreaMap = () => {
   let pathname = "";
@@ -122,93 +123,104 @@ export const AreaMap = () => {
   };
 
   return (
-    <div className="relative">
-      <div className="w-12 absolute left-0 top-0 z-50 ml-2">
-        <div className="flex flex-col gap-4 mt-2">
-          <Button isIconOnly variant="bordered" className="bg-blue-700">
-            <BsFillArrowLeftSquareFill
-              // size={26}
-              className={`cursor-pointer text-white h-6 w-6 ${
-                isSideNavOpen ? "" : "rotate-180"
-              }`}
-              onClick={() => collapsibleBtnHandler()}
-            />
-          </Button>
-          <Button isIconOnly variant="bordered" className="bg-blue-700">
-            <GiEarthAmerica className={`text-white cursor-pointer h-6 w-6`} />
-          </Button>
-          <Button isIconOnly variant="bordered" className="bg-blue-700">
-            <AiFillPlusSquare className={`text-white cursor-pointer h-6 w-6`} />
-          </Button>
-          <Button isIconOnly variant="bordered" className="bg-blue-700">
-            <AiFillMinusSquare
-              className={`text-white cursor-pointer h-6 w-6`}
-            />
-          </Button>
+    <div className="flex">
+      <AreaSideNavbar/>
+      <div className="relative">
+        <div className="w-12 absolute left-0 top-0 z-50 ml-2">
+          <div className="flex flex-col gap-4 mt-2">
+            <Button isIconOnly variant="bordered" className="bg-blue-700">
+              <BsFillArrowLeftSquareFill
+                // size={26}
+                className={`cursor-pointer text-white h-6 w-6 ${
+                  isSideNavOpen ? "" : "rotate-180"
+                }`}
+                onClick={() => collapsibleBtnHandler()}
+              />
+            </Button>
+            <Button isIconOnly variant="bordered" className="bg-blue-700">
+              <GiEarthAmerica className={`text-white cursor-pointer h-6 w-6`} />
+            </Button>
+            <Button isIconOnly variant="bordered" className="bg-blue-700">
+              <AiFillPlusSquare
+                className={`text-white cursor-pointer h-6 w-6`}
+              />
+            </Button>
+            <Button isIconOnly variant="bordered" className="bg-blue-700">
+              <AiFillMinusSquare
+                className={`text-white cursor-pointer h-6 w-6`}
+              />
+            </Button>
+          </div>
         </div>
+        <ButtonGroup
+          variant="faded"
+          className="absolute left-0 bottom-0 z-50 m-2"
+          color="primary"
+        >
+          <Button
+            onClick={() => setLyrs("m")}
+            className={`${
+              mapLyrs == "m"
+                ? "bg-blue-700 text-white"
+                : "bg-blue-500 text-white"
+            } `}
+          >
+            Map
+          </Button>
+          <Button
+            onClick={() => setLyrs("s")}
+            className={`${
+              mapLyrs == "s"
+                ? "bg-blue-700 text-white"
+                : "bg-blue-500 text-white"
+            } `}
+          >
+            Satelite
+          </Button>
+          <Button
+            onClick={() => setLyrs("p")}
+            className={`${
+              mapLyrs == "p"
+                ? "bg-blue-700 text-white"
+                : "bg-blue-500 text-white"
+            } `}
+          >
+            Terrain
+          </Button>
+        </ButtonGroup>
+        <Map
+          ref={mapRef}
+          style={{
+            width: isSideNavOpen ? "80vw" : "100vw",
+            // width: `${isAreaSideNavOpen ? "75vw" : "100vw"}`,
+            height: "90vh",
+          }}
+          controls={[]}
+        >
+          <olView
+            // ref={mapRef}
+            initialCenter={[0, 0]}
+            center={areaInitialCenter}
+            initialZoom={2}
+            zoom={areaZoomLevel}
+          />
+          <olLayerTile preload={Infinity}>
+            {/* <olSourceOSM /> */}
+            <olSourceXYZ
+              args={{
+                url: `https://mt0.google.com/vt/lyrs=${mapLyrs}&hl=en&x={x}&y={y}&z={z}`,
+                // url: `https://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}`,
+              }}
+            ></olSourceXYZ>
+          </olLayerTile>
+        </Map>
       </div>
-      <ButtonGroup
-        variant="faded"
-        className="absolute left-0 bottom-0 z-50 m-2"
-        color="primary"
-      >
-        <Button
-          onClick={() => setLyrs("m")}
-          className={`${
-            mapLyrs == "m" ? "bg-blue-700 text-white" : "bg-blue-500 text-white"
-          } `}
-        >
-          Map
-        </Button>
-        <Button
-          onClick={() => setLyrs("s")}
-          className={`${
-            mapLyrs == "s" ? "bg-blue-700 text-white" : "bg-blue-500 text-white"
-          } `}
-        >
-          Satelite
-        </Button>
-        <Button
-          onClick={() => setLyrs("p")}
-          className={`${
-            mapLyrs == "p" ? "bg-blue-700 text-white" : "bg-blue-500 text-white"
-          } `}
-        >
-          Terrain
-        </Button>
-      </ButtonGroup>
-      <Map
-        ref={mapRef}
-        style={{
-          width: isSideNavOpen ? "80vw" : "100vw",
-          // width: `${isAreaSideNavOpen ? "75vw" : "100vw"}`,
-          height: "90vh",
-        }}
-        controls={[]}
-      >
-        <olView
-          // ref={mapRef}
-          initialCenter={[0, 0]}
-          center={areaInitialCenter}
-          initialZoom={2}
-          zoom={areaZoomLevel}
-        />
-        <olLayerTile preload={Infinity}>
-          {/* <olSourceOSM /> */}
-          <olSourceXYZ
-            args={{
-              url: `https://mt0.google.com/vt/lyrs=${mapLyrs}&hl=en&x={x}&y={y}&z={z}`,
-              // url: `https://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}`,
-            }}
-          ></olSourceXYZ>
-        </olLayerTile>
-      </Map>
     </div>
   );
 };
 {
   /* <olLayerTile>
-        {/* <olSourceOSM /> */
+  {/* <olSourceOSM /> */
 }
 //     <olSourceXYZ args={{ url: "https://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}", }} > map=m terr=p satt=s
 //   </olSourceXYZ>

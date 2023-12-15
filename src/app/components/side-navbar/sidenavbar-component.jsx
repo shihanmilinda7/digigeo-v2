@@ -19,6 +19,7 @@ import {
 import { useRouter, useSearchParams } from "next/navigation";
 import { MdLocationOn } from "react-icons/md";
 import AreaFilter from "../filter-popups/area-filters";
+import AreaBottomSideComp from "./bottom-components/area-bottom-side-component";
 
 const SideNavbar = () => {
   let pathname = "";
@@ -162,6 +163,9 @@ const SideNavbar = () => {
                   {/* <FaFilter className="absolute right-0 h-4 w-4 mr-6" /> */}
                 </button>
               </div>
+            </div>
+            <div className="mt-4 mb-1 flex items-center justify-center border-b-2">
+              <AreaBottomSideComp/>
             </div>
             <div className="w-full pb-2 pl-2 pr-2 pt-8">
               <div className="flex justify-center">

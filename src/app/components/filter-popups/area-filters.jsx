@@ -3,12 +3,15 @@
 import Modal from "react-modal";
 
 import { useEffect, useState } from "react";
-import { Button } from "@nextui-org/react";
+import { Button, Chip } from "@nextui-org/react";
 import { FaFilter } from "react-icons/fa";
 import { AiOutlineCloseCircle } from "react-icons/ai";
+import NextTextInputField from "../common-comp/next-text-input-fields";
 
 const AreaFilter = ({ isOpenIn, closePopup }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [country, setCountry] = useState("");
+  const [miningArea, setMiningArea] = useState("");
 
   const customStyles = {
     overlay: {
@@ -16,12 +19,14 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
       zIndex: 50,
     },
     content: {
-      top: "30%",
+      top: "40%",
       left: "50%",
       right: "auto",
       bottom: "auto",
       marginRight: "-50%",
       transform: "translate(-50%, -50%)",
+      backgroundColor: "transparent",
+      border: "none",
     },
   };
 
@@ -38,68 +43,56 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
         style={customStyles}
         ariaHideApp={false}
       >
-        <div className="flex items-center justify-center">
-          <span className="text-base font-semibold leading-none text-gray-900 select-none mr-auto flex item-center justify-center uppercase">
-            Filters
-          </span>
-          <AiOutlineCloseCircle
-            onClick={closePopup}
-            className="h-6 w-6 text-indigo-700 hover:text-indigo-500 cursor-pointer flex justify-end"
-          />
-        </div>
-        <div className="flex items-center justify-center pl-8 pr-8">
-          <div className="mx-auto w-full max-w-[550px]">
-            <div className="-mx-3 flex flex-wrap">
-              <div className="w-full px-3 flex flex-col gap-3">
-                {/* <TextInputField
-                  label="Old Password"
-                  id="oldpassword"
-                  name="oldpassword"
-                  autoComplete=""
-                  placeholder="Old Password"
-                  value={oldpassword}
-                  onChange={(e) => setOldpassword(e.target.value)}
-                /> */}
-                {/* <TextInputField
-                  label="New Password"
-                  id="newpassword"
-                  name="newpassword"
-                  autoComplete=""
-                  placeholder="Task Description"
-                  value={newpassword}
-                  onChange={(e) => setNewpassword(e.target.value)}
-                /> */}
-                {/* <TextInputField
-                  label="Confirm New Password"
-                  id="confirmnewpassword"
-                  name="confirmnewpassword"
-                  autoComplete=""
-                  placeholder="Confirm New Password"
-                  value={confirmnewpassword}
-                  onChange={(e) => setConfirmnewpassword(e.target.value)}
-                /> */}
+        <div className="bg-white rounded-lg ">
+          <div className="flex items-center justify-center">
+            <span className="text-base font-semibold leading-none text-gray-900 select-none flex item-center justify-center uppercase mt-3">
+              Filters
+            </span>
+            <AiOutlineCloseCircle
+              onClick={closePopup}
+              className="h-6 w-6 cursor-pointer absolute right-0 mt-2 mr-6"
+            />
+          </div>
+          <div className="flex items-center justify-center pl-8 pr-8">
+            <div className="mx-auto w-full max-w-[550px] min-w-[550px] min-h-[350px]">
+              <div className="-mx-3 flex flex-wrap mt-8">
+                <div className="w-full px-3 flex flex-col gap-3">
+                  <span className="text-base font-semibold leading-none text-gray-900 mt-3 border-b-2 border-gray-900 w-fit">
+                    Exploration Areas
+                  </span>
+                  <div className="flex gap-2">
+                    <NextTextInputField
+                      label="Country"
+                      value={country}
+                      onChange={(e) => setCountry(e.target.value)}
+                      className="w-full rounded-lg border border-blue-500"
+                      variant="bordered"
+                    />
+                    <NextTextInputField
+                      label="Mining Area"
+                      value={miningArea}
+                      onChange={(e) => setMiningArea(e.target.value)}
+                      className="w-full rounded-lg border border-blue-500"
+                      variant="bordered"
+                    />
+                  </div>
+                </div>
               </div>
-            </div>
-            <div className="flex items-center justify-center mt-3">
-              <div className="mr-3">
-                <Button color="danger" variant="faded" onClick={closePopup}>
-                  Close
-                </Button>
-                {/* <button
-                  onClick={updateNewPassword}
-                  className="rounded-lg bg-gradient-to-r from-green-500 to-green-600  hover:bg-gradient-to-l hover:from-green-500 hover:to-green-600 py-3 px-8 text-center text-base font-semibold text-white outline-none"
-                >
-                  Update
-                </button> */}
-              </div>
-              <div>
-                <Button color="primary">Save</Button>
-                {/* <button
-                  onClick={() => setIsOpen(false)}
-                  className="rounded-lg bg-gradient-to-r from-amber-500 to-amber-600  hover:bg-gradient-to-l hover:from-amber-500 hover:to-amber-600 py-3 px-8 text-center text-base font-semibold text-white outline-none"
-                >
-                  Cancel
-                </button> */}
+              <div className="flex items-center justify-between mt-3 fixed bottom-8 border-t-2 border-gray-300 min-w-[550px]">
+                <div className="mt-2">
+                  <Chip
+                    color="default"
+                    variant="light"
+                    className="cursor-pointer"
+                  >
+                    Reset
+                  </Chip>
+                </div>
+                <div className="mt-2">
+                  <Chip color="primary" className="cursor-pointer">
+                    Search
+                  </Chip>
+                </div>
               </div>
             </div>
           </div>
