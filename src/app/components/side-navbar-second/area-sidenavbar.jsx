@@ -20,6 +20,7 @@ import {
 import { useRouter, useSearchParams } from "next/navigation";
 import { MdLocationOn } from "react-icons/md";
 import AreaFilter from "../filter-popups/area-filters";
+import { setIsAreaSideNavOpen } from "../../../store/area-map/area-map-slice";
 
 const AreaSideNavbar = () => {
   let pathname = "";
@@ -35,13 +36,16 @@ const AreaSideNavbar = () => {
       pathname = pathname.substring(0, r);
     }
   }
-  const [isOpenIn, setIsOpenIn] = useState();
+  const [isSecondSideOpen, setIsSecondSideOpen] = useState(false);
 
-  const selectedMap = useSelector(
-    (state) => state.mapSelectorReducer.selectedMap
-  );
   const isSideNavOpen = useSelector(
     (state) => state.mapSelectorReducer.isSideNavOpen
+  );
+  const isAreaSideNavOpen = useSelector(
+    (state) => state.areaMapReducer.isAreaSideNavOpen
+  );
+  const selectedMap = useSelector(
+    (state) => state.mapSelectorReducer.selectedMap
   );
   const areaLyrs = useSelector((state) => state.mapSelectorReducer.areaLyrs);
   const areaZoomLevel = useSelector(
@@ -51,14 +55,17 @@ const AreaSideNavbar = () => {
     (state) => state.mapSelectorReducer.areaInitialCenter
   );
 
-  const selectMapHandler = (selectedValue) => {
-    dispatch(setSelectedMap(selectedValue));
-    const newUrl = `${window.location.pathname}?t=${selectedValue}&sn=${isSideNavOpen}&lyrs=${areaLyrs}&z=${areaZoomLevel}&c=${areaInitialCenter}`;
-    window.history.replaceState({}, "", newUrl);
-  };
+  // useEffect(() => {
+  //   if (areaCountry && areaState) {
+  //     setIsSecondSideOpen(true);
+  //   }
+  // }, [areaCountry, areaState]);
 
-  const closePopup = () => {
-    setIsOpenIn(false);
+  const closeSecondNavBar = () => {
+    // setIsSecondSideOpen(false);
+    const newUrl = `${window.location.pathname}?t=${selectedMap}&sn=${isSideNavOpen}&sn2=false&lyrs=${areaLyrs}&z=${areaZoomLevel}&c=${areaInitialCenter}`;
+    window.history.replaceState({}, "", newUrl);
+    dispatch(setIsAreaSideNavOpen(false));
   };
 
   return (
@@ -67,36 +74,28 @@ const AreaSideNavbar = () => {
         <div
           className={`
         ${
-          isSideNavOpen
+          isAreaSideNavOpen && isSideNavOpen
             ? "bg-white dark:bg-black border-2 rounded-md border-blue-700"
             : ""
         } 
         h-[90vh] ml-2 mt-2
-        ${isSideNavOpen ? "w-80 sm:w-72 mr-2" : "w-0"} 
+        ${isAreaSideNavOpen && isSideNavOpen ? "w-80 sm:w-72 mr-2" : "w-0"} 
         duration-500`}
         >
           <div
-            className={`${isSideNavOpen ? "py-0.1 flex flex-col " : "hidden"}`}
+            className={`${
+              isAreaSideNavOpen && isSideNavOpen
+                ? "py-0.1 flex flex-col "
+                : "hidden"
+            }`}
           >
             <div className="ml-2 mr-2 mt-1 mb-1 flex items-center justify-center border-b-2 relative">
               <span className="font-bold">Company List</span>
               <AiOutlineCloseCircle
-                onClick={closePopup}
+                onClick={closeSecondNavBar}
                 className="h-6 w-6 text-blue-700 cursor-pointer absolute right-0"
               />
             </div>
-            {/* <div className="m-2">
-              <Input
-                isClearable
-                type="text"
-                size={"sm"}
-                variant="flat"
-                placeholder="Search here..."
-                onClear={() => console.log("input cleared")}
-                className="w-full rounded-lg border border-blue-500"
-                startContent={<FaSearch className="h-4 w-4 text-gray-400" />}
-              />
-            </div> */}
           </div>
           <div className="mt-4 flex flex-col gap-4 relative"></div>
         </div>

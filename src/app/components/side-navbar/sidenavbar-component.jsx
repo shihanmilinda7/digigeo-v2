@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Input } from "@nextui-org/react";
+import { Button, Chip, Input } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import {
   AiFillMinusSquare,
@@ -20,6 +20,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { MdLocationOn } from "react-icons/md";
 import AreaFilter from "../filter-popups/area-filters";
 import AreaBottomSideComp from "./bottom-components/area-bottom-side-component";
+import { setIsAreaSideNavOpen } from "../../../store/area-map/area-map-slice";
 
 const SideNavbar = () => {
   let pathname = "";
@@ -51,9 +52,18 @@ const SideNavbar = () => {
     (state) => state.mapSelectorReducer.areaInitialCenter
   );
 
+  const isAreaSideNavOpen = useSelector(
+    (state) => state.areaMapReducer.isAreaSideNavOpen
+  );
+  const areaCountry = useSelector((state) => state.areaMapReducer.areaCountry);
+  const areaState = useSelector((state) => state.areaMapReducer.areaState);
+
   const selectMapHandler = (selectedValue) => {
     dispatch(setSelectedMap(selectedValue));
-    const newUrl = `${window.location.pathname}?t=${selectedValue}&sn=${isSideNavOpen}&lyrs=${areaLyrs}&z=${areaZoomLevel}&c=${areaInitialCenter}`;
+    let newUrl;
+    if (selectedValue == "area") {
+      newUrl = `${window.location.pathname}?t=${selectedValue}&sn=${isSideNavOpen}&sn2=${isAreaSideNavOpen}&lyrs=${areaLyrs}&z=${areaZoomLevel}&c=${areaInitialCenter}`;
+    }
     window.history.replaceState({}, "", newUrl);
   };
 
@@ -61,6 +71,11 @@ const SideNavbar = () => {
     setIsOpenIn(false);
   };
 
+  const openAreaNav = () => {
+    const newUrl = `${window.location.pathname}?t=${selectedMap}&sn=${isSideNavOpen}&sn2=true&lyrs=${areaLyrs}&z=${areaZoomLevel}&c=${areaInitialCenter}`;
+    window.history.replaceState({}, "", newUrl);
+    dispatch(setIsAreaSideNavOpen(true));
+  };
   return (
     <section className="flex gap-6">
       <div className={`duration-500 flex w-auto`}>
@@ -95,32 +110,62 @@ const SideNavbar = () => {
               />
             </div>
             <div className="flex flex-col gap-2 w-full pb-2 pl-2 pr-2">
-              <div className="flex justify-center gap-1 w-full">
-                <button
-                  onClick={() => selectMapHandler("area")}
-                  className={`relative flex items-center border rounded-lg border-blue-500 focus:outline-none ${
-                    selectedMap === "area"
-                      ? " text-white bg-blue-600 w-10/12"
-                      : " text-blue-600 bg-white w-full"
-                  } text-sm sm:text-sm hover:bg-blue-200 py-2 transition duration-150 ease-in`}
+              <div className="flex justify-center gap-1 w-full flex-col">
+                <div className="flex justify-center gap-1 w-full">
+                  <button
+                    onClick={() => selectMapHandler("area")}
+                    className={`relative flex items-center border rounded-lg border-blue-500 focus:outline-none ${
+                      selectedMap === "area"
+                        ? " text-white bg-blue-600 w-10/12"
+                        : " text-blue-600 bg-white w-full"
+                    } text-sm sm:text-sm hover:bg-blue-200 py-2 transition duration-150 ease-in`}
+                  >
+                    <MdLocationOn className="h-6 w-6 ml-4" />
+                    <span className="uppercase ml-4 font-semibold">
+                      Exploration areas
+                    </span>
+                    {/* <FaFilter className="absolute right-0 h-4 w-4 mr-6" /> */}
+                  </button>
+                  <AreaFilter isOpenIn={isOpenIn} closePopup={closePopup} />
+                  <button
+                    onClick={() => setIsOpenIn(true)}
+                    className={`relative flex items-center justify-center border rounded-lg border-blue-500 focus:outline-none ${
+                      selectedMap === "area"
+                        ? " text-white bg-blue-600 w-2/12"
+                        : " hidden"
+                    } text-sm sm:text-sm hover:bg-blue-200 py-2 transition duration-150 ease-in`}
+                  >
+                    <FaFilter className="h-4 w-4" />
+                  </button>
+                </div>
+                <div
+                  className={`${
+                    selectedMap === "area" &&
+                    !isAreaSideNavOpen &&
+                    areaCountry != "" &&
+                    areaState != ""
+                      ? "flex justify-between"
+                      : "hidden"
+                  } `}
                 >
-                  <MdLocationOn className="h-6 w-6 ml-4" />
-                  <span className="uppercase ml-4 font-semibold">
-                    Exploration areas
-                  </span>
-                  {/* <FaFilter className="absolute right-0 h-4 w-4 mr-6" /> */}
-                </button>
-                <AreaFilter isOpenIn={isOpenIn} closePopup={closePopup} />
-                <button
-                  onClick={() => setIsOpenIn(true)}
-                  className={`relative flex items-center justify-center border rounded-lg border-blue-500 focus:outline-none ${
-                    selectedMap === "area"
-                      ? " text-white bg-blue-600 w-2/12"
-                      : " hidden"
-                  } text-sm sm:text-sm hover:bg-blue-200 py-2 transition duration-150 ease-in`}
-                >
-                  <FaFilter className="h-4 w-4" />
-                </button>
+                  <Chip
+                    color="default"
+                    variant="light"
+                    className="cursor-pointer"
+                    size="sm"
+                  >
+                    Reset
+                  </Chip>
+                  <Chip
+                    color="primary"
+                    variant="bordered"
+                    className="cursor-pointer hover:bg-gray-200"
+                    size="sm"
+                    onClick={openAreaNav}
+                  >
+                    View List
+                  </Chip>
+                </div>
                 {/* <button
                   className={`relative flex items-center justify-center border rounded-lg border-blue-500 focus:outline-none ${
                     selectedMap === "area"
@@ -164,10 +209,10 @@ const SideNavbar = () => {
                 </button>
               </div>
             </div>
-            <div className="mt-4 mb-1 flex items-center justify-center border-b-2">
-              <AreaBottomSideComp/>
+            <div className="mt-4 mb-1 flex items-center justify-center">
+              <AreaBottomSideComp />
             </div>
-            <div className="w-full pb-2 pl-2 pr-2 pt-8">
+            <div className="w-full pb-2 pl-2 pr-2 pt-2">
               <div className="flex justify-center">
                 <button
                   // onClick={masterLoginEvent}

@@ -7,11 +7,35 @@ import { Button, Chip } from "@nextui-org/react";
 import { FaFilter } from "react-icons/fa";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import NextTextInputField from "../common-comp/next-text-input-fields";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setAreaCountry,
+  setAreaState,
+  setIsAreaSideNavOpen,
+} from "../../../store/area-map/area-map-slice";
 
 const AreaFilter = ({ isOpenIn, closePopup }) => {
+  const dispatch = useDispatch();
+
   const [isOpen, setIsOpen] = useState(false);
   const [country, setCountry] = useState("");
   const [miningArea, setMiningArea] = useState("");
+
+  const selectedMap = useSelector(
+    (state) => state.mapSelectorReducer.selectedMap
+  );
+  const areaLyrs = useSelector((state) => state.mapSelectorReducer.areaLyrs);
+  const areaZoomLevel = useSelector(
+    (state) => state.mapSelectorReducer.areaZoomLevel
+  );
+  const areaInitialCenter = useSelector(
+    (state) => state.mapSelectorReducer.areaInitialCenter
+  );
+  const isSideNavOpen = useSelector(
+    (state) => state.mapSelectorReducer.isSideNavOpen
+  );
+  const areaCountry = "Test";
+  const areaState = "Test";
 
   const customStyles = {
     overlay: {
@@ -33,6 +57,18 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
   useEffect(() => {
     setIsOpen(isOpenIn);
   }, [isOpenIn]);
+
+  const searchAction = async () => {
+    if (areaCountry && areaState) {
+      const newUrl = `${window.location.pathname}?t=${selectedMap}&sn=${isSideNavOpen}&sn2=true&lyrs=${areaLyrs}&z=${areaZoomLevel}&c=${areaInitialCenter}`;
+      window.history.replaceState({}, "", newUrl);
+      dispatch(setIsAreaSideNavOpen(true));
+      dispatch(setAreaCountry(areaCountry));
+      dispatch(setAreaState(areaState));
+      closePopup();
+    }
+    // dispatch(setAreaState("Canada"));
+  };
 
   return (
     <div>
@@ -89,7 +125,11 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
                   </Chip>
                 </div>
                 <div className="mt-2">
-                  <Chip color="primary" className="cursor-pointer">
+                  <Chip
+                    color="primary"
+                    className="cursor-pointer hover:bg-blue-500 custom-button-1"
+                    onClick={searchAction}
+                  >
                     Search
                   </Chip>
                 </div>

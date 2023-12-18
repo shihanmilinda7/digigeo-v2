@@ -18,6 +18,8 @@ import { BsFillArrowLeftSquareFill } from "react-icons/bs";
 import { GiEarthAmerica } from "react-icons/gi";
 import { AiFillMinusSquare, AiFillPlusSquare } from "react-icons/ai";
 import AreaSideNavbar from "../side-navbar-second/area-sidenavbar";
+import { FaChevronLeft, FaChevronUp } from "react-icons/fa";
+import { setIsAreaSideNavOpen } from "../../../store/area-map/area-map-slice";
 
 export const AreaMap = () => {
   let pathname = "";
@@ -49,13 +51,16 @@ export const AreaMap = () => {
   const areaInitialCenter = useSelector(
     (state) => state.mapSelectorReducer.areaInitialCenter
   );
+  const isAreaSideNavOpen = useSelector(
+    (state) => state.areaMapReducer.isAreaSideNavOpen
+  );
 
   useEffect(() => {
     mouseScrollEvent();
   }, []);
 
   useEffect(() => {
-    const newUrl = `${window.location.pathname}?t=${selectedMap}&sn=${isSideNavOpen}&lyrs=${mapLyrs}&z=${zoom}&c=${center}`;
+    const newUrl = `${window.location.pathname}?t=${selectedMap}&sn=${isSideNavOpen}&sn2=${isAreaSideNavOpen}&lyrs=${mapLyrs}&z=${zoom}&c=${center}`;
     window.history.replaceState({}, "", newUrl);
   }, [zoom, center]);
 
@@ -111,20 +116,26 @@ export const AreaMap = () => {
     dispatch(setIsSideNavOpen(!tmpValue));
     const newUrl = `${
       window.location.pathname
-    }?t=${selectedMap}&sn=${!tmpValue}&lyrs=${mapLyrs}&z=${areaZoomLevel}&c=${areaInitialCenter}`;
+    }?t=${selectedMap}&sn=${!tmpValue}&sn2=${isAreaSideNavOpen}&lyrs=${mapLyrs}&z=${areaZoomLevel}&c=${areaInitialCenter}`;
     window.history.replaceState({}, "", newUrl);
     // dispatch(setUrlUpdate());
   };
 
   const setLyrs = (lyrs) => {
     dispatch(setAreaLyrs(lyrs));
-    const newUrl = `${window.location.pathname}?t=${selectedMap}&sn=${isSideNavOpen}&lyrs=${lyrs}&z=${areaZoomLevel}&c=${areaInitialCenter}`;
+    const newUrl = `${window.location.pathname}?t=${selectedMap}&sn=${isSideNavOpen}&sn2=${isAreaSideNavOpen}&lyrs=${lyrs}&z=${areaZoomLevel}&c=${areaInitialCenter}`;
     window.history.replaceState({}, "", newUrl);
+  };
+
+  const openAreaNav = () => {
+    const newUrl = `${window.location.pathname}?t=${selectedMap}&sn=${isSideNavOpen}&sn2=true&lyrs=${mapLyrs}&z=${areaZoomLevel}&c=${areaInitialCenter}`;
+    window.history.replaceState({}, "", newUrl);
+    dispatch(setIsAreaSideNavOpen(true));
   };
 
   return (
     <div className="flex">
-      <AreaSideNavbar/>
+      <AreaSideNavbar />
       <div className="relative">
         <div className="w-12 absolute left-0 top-0 z-50 ml-2">
           <div className="flex flex-col gap-4 mt-2">
@@ -150,6 +161,15 @@ export const AreaMap = () => {
                 className={`text-white cursor-pointer h-6 w-6`}
               />
             </Button>
+            {/* {!isAreaSideNavOpen && isSideNavOpen ? (
+              <Button
+                variant="bordered"
+                className="bg-blue-700 mt-12 -ml-5 rotate-90"
+                onClick={openAreaNav}
+              >
+                <FaChevronUp className={`text-white cursor-pointer h-6 w-6`} />
+              </Button>
+            ) : null} */}
           </div>
         </div>
         <ButtonGroup

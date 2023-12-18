@@ -19,6 +19,7 @@ import {
   setIsSideNavOpen,
   setSelectedMap,
 } from "../../../store/map-selector/map-selector-slice";
+import { setIsAreaSideNavOpen } from "../../../store/area-map/area-map-slice";
 
 export const LandingPage = () => {
   let pathname = "";
@@ -46,6 +47,7 @@ export const LandingPage = () => {
   const searchParams = useSearchParams();
   const mapType = searchParams.get("t");
   const isNavOpen = searchParams.get("sn");
+  const isSecondNavOpen = searchParams.get("sn2");
   const mapLyrs = searchParams.get("lyrs");
   const mapZoom = searchParams.get("z");
   const mapCenter = searchParams.get("c");
@@ -62,6 +64,11 @@ export const LandingPage = () => {
         case "area":
           dispatch(
             setIsSideNavOpen(String(isNavOpen).toLowerCase() === "true")
+          );
+          dispatch(
+            setIsAreaSideNavOpen(
+              String(isSecondNavOpen).toLowerCase() === "true"
+            )
           );
           dispatch(setAreaLyrs(mapLyrs));
           dispatch(setAreaZoomLevel(mapZoom));

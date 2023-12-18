@@ -25,3 +25,18 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+.transition-opacity {
+  transition-property: opacity;
+  transition-timing-function: ease;
+  transition-duration: 250ms;
+  padding: 3px;
+}
+
+.custom-button-1 {
+  transition: all 0.3s ease;
+}
+.custom-button-1:hover {
+  transform: scale(1.05);
+}
+
